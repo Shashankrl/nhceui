@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps</title>
+    <title>FundWise</title>
     <style>
         :root {
             --bg-color: #0d0d0d;
@@ -11,72 +11,81 @@
             --text-color: #e0e0e0;
             --primary-color: #8a4af3;
             --secondary-color: #00d4b8;
-            --user-message-bg: #8a4af3;
-            --bot-message-bg: #222222;
-            --input-bg: #252525;
-            --border-color: #404040;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --user-message-bg: rgba(138, 74, 243, 0.2);
+            --bot-message-bg: rgba(34, 34, 34, 0.9);
+            --input-bg: rgba(37, 37, 37, 0.8);
+            --border-color: rgba(64, 64, 64, 0.5);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
             min-height: 100vh;
-            background-color: var(--bg-color);
+            background: radial-gradient(circle at 30% 20%, rgba(138, 74, 243, 0.2), transparent 50%),
+                       radial-gradient(circle at 70% 80%, rgba(0, 212, 184, 0.2), transparent 50%),
+                       #0d0d0d;
             color: var(--text-color);
-            line-height: 1.6;
+            display: flex;
+            overflow: hidden;
         }
 
         /* Header */
         .header-title {
-            font-size: 5rem;
-            font-weight: 600;
-            color: var(--primary-color);
+            font-size: 4.5rem;
+            font-weight: 700;
             text-align: center;
-            padding: 2.5rem 0;
-            margin: 0;
+            padding: 2rem 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            background-color: transparent; /* No background gradient */
-             /* Reset gradient effect */
-            -webkit-text-fill-color: var(--primary-color); /* Solid color instead of gradient */
+            letter-spacing: 3px;
+            animation: gradientShift 4s ease infinite;
         }
 
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background-color: var(--sidebar-bg);
+            background: linear-gradient(135deg, rgba(24, 24, 24, 0.95), rgba(40, 40, 40, 0.9));
             padding: 20px;
             box-shadow: var(--shadow);
             height: 100vh;
             overflow-y: auto;
-            transition: width 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
         }
         .sidebar h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.6rem;
             color: var(--primary-color);
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         .sidebar-chat-item {
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
-            background-color: var(--bg-color);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: rgba(40, 40, 40, 0.6);
             border: 1px solid var(--border-color);
-            transition: background 0.2s ease;
+            transition: transform 0.3s ease, background 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         .sidebar-chat-item:hover {
-            background-color: #2a2a2a;
+            transform: translateX(5px);
+            background: rgba(60, 60, 60, 0.7);
         }
         .sidebar-chat-item summary {
-            font-size: 0.9rem;
-            color: var(--text-color);
+            font-size: 0.95rem;
+            cursor: pointer;
         }
         .sidebar-chat-item div {
             font-size: 0.85rem;
@@ -90,39 +99,39 @@
             padding: 20px;
             overflow-y: auto;
             height: 100vh;
-            position: relative;
-            background: linear-gradient(135deg, var(--bg-color), #151515);
+            background: radial-gradient(circle at top left, rgba(138, 74, 243, 0.1), transparent 70%),
+                        radial-gradient(circle at bottom right, rgba(0, 212, 184, 0.1), transparent 70%);
         }
         .chat-container {
-            margin-bottom: 100px;
-            max-width: 800px;
+            margin-bottom: 120px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
         .message {
-            padding: 12px 18px;
-            border-radius: 12px;
-            margin: 12px 0;
-            max-width: 70%;
-            word-wrap: break-word;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            max-width: 75%;
+            backdrop-filter: blur(8px);
             box-shadow: var(--shadow);
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.4s ease-out;
+            border: 1px solid var(--border-color);
         }
         .user-message {
-            background-color: var(--user-message-bg);
             margin-left: auto;
+            background: linear-gradient(135deg, var(--primary-color), rgba(138, 74, 243, 0.7));
             color: white;
         }
         .bot-message {
-            background-color: var(--bot-message-bg);
             margin-right: auto;
-            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bot-message-bg), rgba(60, 60, 60, 0.8));
         }
         .message small {
-            display: block;
             font-size: 0.75rem;
-            opacity: 0.7;
-            margin-top: 5px;
+            opacity: 0.8;
+            margin-top: 8px;
+            display: block;
         }
 
         /* Input Container */
@@ -131,84 +140,79 @@
             bottom: 0;
             left: 280px;
             right: 0;
-            padding: 15px 20px;
-            background-color: var(--sidebar-bg);
-            box-shadow: var(--shadow);
+            padding: 20px;
+            background: linear-gradient(to top, rgba(24, 24, 24, 0.95), transparent);
+            backdrop-filter: blur(10px);
         }
         form {
             display: flex;
-            gap: 10px;
-            max-width: 800px;
+            gap: 12px;
+            max-width: 900px;
             margin: 0 auto;
         }
         .chat-input {
             flex: 1;
-            background-color: var(--input-bg);
+            background: var(--input-bg);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            border-radius: 25px;
-            padding: 12px 20px;
+            border-radius: 30px;
+            padding: 14px 25px;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         .chat-input:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(138, 74, 243, 0.3);
         }
         button {
-            background-color: var(--primary-color);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 14px 30px;
+            border-radius: 30px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background 0.2s ease;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
         }
         button:hover {
-            background-color: #6e3cc9;
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #6e3cc9, #00b89c);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 30vh;
-            }
-            .input-container {
-                left: 0;
-            }
-            .header-title {
-                font-size: 2rem;
-            }
-            .message {
-                max-width: 85%;
-            }
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; max-height: 35vh; }
+            .input-container { left: 0; }
+            .header-title { font-size: 2.5rem; }
+            .message { max-width: 90%; }
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--sidebar-bg);
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6e3cc9;
+            background: linear-gradient(var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
         }
 
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
@@ -228,7 +232,7 @@
     </div>
 
     <div class="main-content">
-        <h1 class="header-title">HackOps</h1>
+        <h1 class="header-title">FundWise</h1>
 
         <div class="chat-container" id="chat-container">
             {% for message in chat_history.current_messages %}
@@ -250,7 +254,6 @@
     </div>
 
     <script>
-        // Auto-scroll to the bottom of the chat container
         const chatContainer = document.getElementById('chat-container');
         chatContainer.scrollTop = chatContainer.scrollHeight;
     </script>
