@@ -3,80 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsSense</title>
+    <title>DevOps</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --sidebar-bg: #1e1e1e;
+            --bg-color: #0d0d0d;
+            --sidebar-bg: #181818;
             --text-color: #e0e0e0;
-            --primary-color: #bb86fc;
-            --secondary-color: #03dac6;
-            --user-message-bg: #ffffff;
-            --bot-message-bg: #1f1f1f;
-            --input-bg: #2d2d2d;
-            --border-color: #333;
+            --primary-color: #8a4af3;
+            --secondary-color: #00d4b8;
+            --user-message-bg: #8a4af3;
+            --bot-message-bg: #222222;
+            --input-bg: #252525;
+            --border-color: #404040;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             min-height: 100vh;
             background-color: var(--bg-color);
             color: var(--text-color);
+            line-height: 1.6;
         }
-        
-        /* Header styling */
-        .header-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 0;
-            margin-bottom: 1rem;
-        }
+
+        /* Header */
         .header-title {
-            font-size: 4rem;
-            font-weight: 700;
+            font-size: 5rem;
+            font-weight: 600;
             color: var(--primary-color);
             text-align: center;
-            font-family: 'Arial', sans-serif;
-            letter-spacing: 1px;
+            padding: 2.5rem 0;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background-color: transparent; /* No background gradient */
+             /* Reset gradient effect */
+            -webkit-text-fill-color: var(--primary-color); /* Solid color instead of gradient */
         }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 2.5rem;
-                padding: 0 1rem;
-            }
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
-            .input-container {
-                left: 0;
-            }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 100vh;
+            overflow-y: auto;
+            transition: width 0.3s ease;
         }
-        
-        /* Chat interface styling */
-        .chat-input {
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            border-radius: 10px;
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .sidebar-chat-item {
             padding: 10px;
-            width: 100%;
+            margin: 8px 0;
+            border-radius: 8px;
+            background-color: var(--bg-color);
             border: 1px solid var(--border-color);
-            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+        .sidebar-chat-item:hover {
+            background-color: #2a2a2a;
+        }
+        .sidebar-chat-item summary {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        .sidebar-chat-item div {
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            margin-top: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-color), #151515);
+        }
+        .chat-container {
+            margin-bottom: 100px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .message {
-            padding: 12px;
-            border-radius: 10px;
-            margin: 10px 0;
-            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin: 12px 0;
+            max-width: 70%;
+            word-wrap: break-word;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s ease;
         }
         .user-message {
             background-color: var(--user-message-bg);
@@ -86,174 +116,131 @@
         .bot-message {
             background-color: var(--bot-message-bg);
             margin-right: auto;
+            color: var(--text-color);
         }
-        
-        /* Sidebar styling */
-        .sidebar {
-            width: 300px;
-            background-color: var(--sidebar-bg);
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-            height: 100vh;
-            overflow-y: auto;
+        .message small {
+            display: block;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 5px;
         }
-        
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            height: 100vh;
-            position: relative;
-        }
-        
-        /* Sidebar chat history styling */
-        .sidebar-chat-item {
-            padding: 8px;
-            margin: 4px 0;
-            border-radius: 4px;
-            background-color: var(--bg-color);
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-        }
-        .sidebar-chat-item:hover {
-            background-color: #252525;
-        }
-        
-        .chat-container {
-            margin-bottom: 80px;
-        }
-        
+
+        /* Input Container */
         .input-container {
             position: fixed;
             bottom: 0;
-            left: 300px;
+            left: 280px;
             right: 0;
-            padding: 20px;
+            padding: 15px 20px;
             background-color: var(--sidebar-bg);
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
         }
-        
         form {
             display: flex;
             gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        
+        .chat-input {
+            flex: 1;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .chat-input:focus {
+            border-color: var(--primary-color);
+        }
         button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: background 0.2s ease;
         }
-        
         button:hover {
-            background-color: #9c64ff;
+            background-color: #6e3cc9;
         }
 
-        /* Markdown-like styling */
-        strong {
-            font-weight: bold;
-            color: var(--secondary-color);
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 30vh;
+            }
+            .input-container {
+                left: 0;
+            }
+            .header-title {
+                font-size: 2rem;
+            }
+            .message {
+                max-width: 85%;
+            }
         }
-        
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        a:hover {
-            text-decoration: underline;
-        }
-        
-        ul {
-            padding-left: 20px;
-        }
-        
-        hr {
-            border-color: var(--border-color);
-        }
-        
-        details summary {
-            cursor: pointer;
-            outline: none;
-        }
-        
-        details summary::-webkit-details-marker {
-            color: var(--primary-color);
-        }
-        
-        /* Scrollbar styling */
+
+        /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
-        
         ::-webkit-scrollbar-track {
             background: var(--sidebar-bg);
         }
-        
         ::-webkit-scrollbar-thumb {
             background: var(--primary-color);
-            border-radius: 4px;
+            border-radius: 3px;
         }
-        
         ::-webkit-scrollbar-thumb:hover {
-            background: #9c64ff;
+            background: #6e3cc9;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h2>Chat History</h2>
-        
         {% if not chat_history.sidebar_history %}
             <p>No chat history yet. Ask a question to get started!</p>
         {% else %}
             {% for item in chat_history.sidebar_history|reverse %}
                 <details class="sidebar-chat-item">
-                    <summary>Q: {{ item.question }} ({{ item.timestamp }})</summary>
-                    <div style="margin-top: 10px;">{{ item.answer|safe }}</div>
+                    <summary>{{ item.question }} <small>({{ item.timestamp }})</small></summary>
+                    <div>{{ item.answer|safe }}</div>
                 </details>
             {% endfor %}
         {% endif %}
-        
-        <hr>
-        <h3>Understand why your funds are moving</h3>
-        <p>Ask questions like:</p>
-        <ul>
-            <li>Why is QQQ down?</li>
-            <li>What's happening with VTI?</li>
-            <li>Explain Nifty IT's performance</li>
-        </ul>
-        
-        <hr>
-        <h3>Supported Funds</h3>
-        <ul>
-            <li>QQQ (Nasdaq-100)</li>
-            <li>VTI (Total Stock Market)</li>
-            <li>Nifty IT</li>
-            <li>SBI Tech</li>
-            <li>And more...</li>
-        </ul>
-        
-        <hr>
-        <p>Last updated: {{ current_time }}</p>
     </div>
-    
+
     <div class="main-content">
-        <div class="header-container">
-            <h1 class="header-title">NewsSense</h1>
-        </div>
-        
-        <div class="chat-container">
+        <h1 class="header-title">HackOps</h1>
+
+        <div class="chat-container" id="chat-container">
             {% for message in chat_history.current_messages %}
                 <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
                     {{ message.content|safe }}
+                    {% if message.timestamp %}
+                        <small>{{ message.timestamp }}</small>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
-        
+
         <div class="input-container">
             <form method="POST" action="/">
                 <input type="text" name="prompt" class="chat-input" placeholder="Ask about any fund..." required autofocus>
@@ -261,5 +248,11 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // Auto-scroll to the bottom of the chat container
+        const chatContainer = document.getElementById('chat-container');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    </script>
 </body>
 </html>
