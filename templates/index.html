@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsSense</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --sidebar-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --user-message-bg: #ffffff;
+            --bot-message-bg: #1f1f1f;
+            --input-bg: #2d2d2d;
+            --border-color: #333;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        /* Header styling */
+        .header-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+            margin-bottom: 1rem;
+        }
+        .header-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.5rem;
+                padding: 0 1rem;
+            }
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            .input-container {
+                left: 0;
+            }
+        }
+        
+        /* Chat interface styling */
+        .chat-input {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            font-size: 16px;
+        }
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: var(--user-message-bg);
+            margin-left: auto;
+            color: white;
+        }
+        .bot-message {
+            background-color: var(--bot-message-bg);
+            margin-right: auto;
+        }
+        
+        /* Sidebar styling */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* Sidebar chat history styling */
+        .sidebar-chat-item {
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+        .sidebar-chat-item:hover {
+            background-color: #252525;
+        }
+        
+        .chat-container {
+            margin-bottom: 80px;
+        }
+        
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            left: 300px;
+            right: 0;
+            padding: 20px;
+            background-color: var(--sidebar-bg);
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+        }
+        
+        form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #9c64ff;
+        }
+
+        /* Markdown-like styling */
+        strong {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        hr {
+            border-color: var(--border-color);
+        }
+        
+        details summary {
+            cursor: pointer;
+            outline: none;
+        }
+        
+        details summary::-webkit-details-marker {
+            color: var(--primary-color);
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--sidebar-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9c64ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Chat History</h2>
+        
+        {% if not chat_history.sidebar_history %}
+            <p>No chat history yet. Ask a question to get started!</p>
+        {% else %}
+            {% for item in chat_history.sidebar_history|reverse %}
+                <details class="sidebar-chat-item">
+                    <summary>Q: {{ item.question }} ({{ item.timestamp }})</summary>
+                    <div style="margin-top: 10px;">{{ item.answer|safe }}</div>
+                </details>
+            {% endfor %}
+        {% endif %}
+        
+        <hr>
+        <h3>Understand why your funds are moving</h3>
+        <p>Ask questions like:</p>
+        <ul>
+            <li>Why is QQQ down?</li>
+            <li>What's happening with VTI?</li>
+            <li>Explain Nifty IT's performance</li>
+        </ul>
+        
+        <hr>
+        <h3>Supported Funds</h3>
+        <ul>
+            <li>QQQ (Nasdaq-100)</li>
+            <li>VTI (Total Stock Market)</li>
+            <li>Nifty IT</li>
+            <li>SBI Tech</li>
+            <li>And more...</li>
+        </ul>
+        
+        <hr>
+        <p>Last updated: {{ current_time }}</p>
+    </div>
+    
+    <div class="main-content">
+        <div class="header-container">
+            <h1 class="header-title">NewsSense</h1>
+        </div>
+        
+        <div class="chat-container">
+            {% for message in chat_history.current_messages %}
+                <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                    {{ message.content|safe }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="input-container">
+            <form method="POST" action="/">
+                <input type="text" name="prompt" class="chat-input" placeholder="Ask about any fund..." required autofocus>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
